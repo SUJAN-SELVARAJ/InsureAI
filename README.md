@@ -1,8 +1,8 @@
 🚀 InsureAI – Smart Insurance Management System
 
-InsureAI is a web-based Insurance Management System developed to automate and manage corporate insurance operations efficiently.
+InsureAI is a full-stack web application designed to automate and manage corporate insurance operations efficiently.
 
-The application allows users to apply for policies, track claims, and enables administrators to manage and approve insurance workflows through a secure system.
+The system allows users to apply for insurance policies, track claims, and enables administrators to manage policies and approvals through a secure, role-based platform.
 
 📌 Project Information
 
@@ -16,22 +16,22 @@ Batch: 6.0 – Batch 13
 
 🎯 Project Objective
 
-The objective of InsureAI is to:
+The main objective of InsureAI is to:
 
 Automate insurance policy management
 
-Simplify claim and application processing
+Simplify application and claim processing
 
 Implement secure role-based authentication
 
-Build a scalable full-stack enterprise application
+Build a scalable enterprise-level web application
 
-Gain practical experience in real-world software development
+Gain hands-on experience with full-stack development
 
 🔹 Core Features
 📝 Policy Management
 
-Create, update, delete, and manage insurance policies.
+Create, update, delete, and manage insurance policies efficiently.
 
 📄 Application & Claim Tracking
 
@@ -39,24 +39,24 @@ Users can apply for policies and monitor their application or claim status.
 
 📊 Dashboard
 
-Real-time overview of policies, claims, and system activity.
+Provides real-time overview of policies, claims, and system activities.
 
-🔐 Role-Based Security
+🔐 Role-Based Access Control
 
-Admin
+Admin – Manage users, policies, and approvals
 
-Manager
+Manager – Monitor operations
 
-User / Employee
+User / Employee – Apply and track policies
 
-Secure authentication using JWT and Spring Security.
+Secure authentication implemented using JWT and Spring Security.
 
 💻 Technology Stack
 🎨 Frontend
 
 React (Vite) – Primary Frontend Framework
 
-Angular – Optional / Alternative Frontend Framework
+Angular – Optional / Alternative Frontend
 
 HTML
 
@@ -64,7 +64,7 @@ CSS
 
 JavaScript / TypeScript
 
-Axios (for API communication)
+Axios
 
 ⚙️ Backend
 
@@ -82,7 +82,7 @@ Maven
 
 MySQL
 
-(Optional: MongoDB for logs / analytics data)
+MongoDB (Optional – for logs or analytics)
 
 🛠️ Tools
 
@@ -95,3 +95,31 @@ GitHub
 Postman
 
 MySQL Workbench
+
+MongoDB Compass
+
+🏗️ System Modules
+
+User Management
+
+Policy Management
+
+Claim Processing
+
+Dashboard & Reporting
+
+Authentication & Security
+
+📈 Future Enhancements
+
+Advanced analytics dashboard
+
+Email notifications
+
+Cloud deployment
+
+AI-based claim risk prediction
+
+👨‍💻 Developed As Part Of
+
+Infosys Virtual Internship – Batch 6.0
