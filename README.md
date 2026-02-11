@@ -1,10 +1,10 @@
 🚀 InsureAI – Smart Insurance Management System
 
-InsureAI is a full-stack web application designed to automate and manage corporate insurance operations efficiently.
+InsureAI is a web-based application developed to automate and manage corporate insurance policies efficiently.
 
-The system allows users to apply for insurance policies, track claims, and enables administrators to manage policies and approvals through a secure, role-based platform.
+The system simplifies policy management, claim processing, and user access control using modern full-stack technologies.
 
-📌 Project Information
+📌 Project Details
 
 Start Date: 2nd February 2026
 
@@ -14,112 +14,37 @@ Internship: Infosys Virtual Internship
 
 Batch: 6.0 – Batch 13
 
-🎯 Project Objective
-
-The main objective of InsureAI is to:
-
-Automate insurance policy management
-
-Simplify application and claim processing
-
-Implement secure role-based authentication
-
-Build a scalable enterprise-level web application
-
-Gain hands-on experience with full-stack development
-
-🔹 Core Features
+🔹 Features
 📝 Policy Management
 
-Create, update, delete, and manage insurance policies efficiently.
+Create, update, view, and delete insurance policies easily.
 
-📄 Application & Claim Tracking
+📄 Claims Processing
 
-Users can apply for policies and monitor their application or claim status.
+Process and track insurance claims in a structured way.
 
 📊 Dashboard
 
-Provides real-time overview of policies, claims, and system activities.
+View real-time data of policies and claims through an interactive dashboard.
 
-🔐 Role-Based Access Control
+🔐 Secure User Management
 
-Admin – Manage users, policies, and approvals
+Role-based access for:
 
-Manager – Monitor operations
+Admin
 
-User / Employee – Apply and track policies
+Manager
 
-Secure authentication implemented using JWT and Spring Security.
+Employee / User
 
-💻 Technology Stack
-🎨 Frontend
+Authentication and authorization implemented securely.
 
-React (Vite) – Primary Frontend Framework
-
-Angular – Optional / Alternative Frontend
-
-HTML
-
-CSS
-
-JavaScript / TypeScript
-
-Axios
-
-⚙️ Backend
-
-Java
-
-Spring Boot
-
-Spring Security
-
-Spring Data JPA
-
-Maven
-
-🗄️ Database
-
-MySQL
-
-MongoDB (Optional – for logs or analytics)
-
-🛠️ Tools
-
-IntelliJ IDEA
-
-VS Code
-
-GitHub
-
-Postman
-
-MySQL Workbench
-
-MongoDB Compass
-
-🏗️ System Modules
-
-User Management
-
-Policy Management
-
-Claim Processing
-
-Dashboard & Reporting
-
-Authentication & Security
-
-📈 Future Enhancements
-
-Advanced analytics dashboard
-
-Email notifications
-
-Cloud deployment
-
-AI-based claim risk prediction
-
-👨‍💻 Developed As Part Of
-
-Infosys Virtual Internship – Batch 6.0
+🔹 Technology Stack
+Layer                              	Technology
+Backend	                     Java, Spring Boot, Spring Security
+Frontend	                   React (Primary), Angular (Optional), HTML, CSS, TypeScript
+Database	                   MySQL, MongoDB (Optional)
+IDE	                         IntelliJ IDEA, VS Code
+Build Tool	                 Maven
+Version Control	             GitHub
+API Testing	                 Postman
