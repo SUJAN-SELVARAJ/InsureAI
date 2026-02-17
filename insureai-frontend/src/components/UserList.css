@@ -1,0 +1,112 @@
+.userlist-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.userlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.userlist-header h1 {
+  color: #333;
+  margin: 0;
+  font-size: 32px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-right span {
+  color: #666;
+  font-size: 14px;
+}
+
+.logout-btn {
+  padding: 10px 20px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.logout-btn:hover {
+  background: #c0392b;
+}
+
+.users-table-container {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-table thead {
+  background: #667eea;
+  color: white;
+}
+
+.users-table th,
+.users-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.users-table tbody tr:hover {
+  background: #f5f5f5;
+}
+
+.users-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.loading,
+.no-users,
+.message {
+  text-align: center;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #666;
+}
+
+.refresh-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 12px 30px;
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.refresh-btn:hover {
+  background: #667eea;
+  color: white;
+}

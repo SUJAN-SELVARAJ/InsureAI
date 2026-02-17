@@ -1,0 +1,16 @@
+# Backend
+/target
+/.mvn
+*.log
+
+# Frontend
+node_modules
+/build
+/dist
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
