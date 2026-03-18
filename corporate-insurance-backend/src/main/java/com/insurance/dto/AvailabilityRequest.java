@@ -2,6 +2,7 @@ package com.insurance.dto;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
@@ -10,7 +11,7 @@ import java.time.LocalTime;
 public class AvailabilityRequest {
     
     @NotNull(message = "Available date is required")
-    @Future(message = "Available date must be in the future")
+    @FutureOrPresent(message = "Available date must be today or in the future")
     private LocalDate availableDate;
     
     @NotNull(message = "Start time is required")

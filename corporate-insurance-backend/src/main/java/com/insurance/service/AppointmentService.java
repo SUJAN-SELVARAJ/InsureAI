@@ -62,7 +62,7 @@ public class AppointmentService {
         // Check for conflicting appointments
         List<Appointment> conflictingAppointments = appointmentRepository
                 .findConflictingAppointments(request.getAgentId(), request.getAppointmentDate(),
-                                           request.getStartTime().toString(), request.getEndTime().toString());
+                                           request.getStartTime(), request.getEndTime());
 
         if (!conflictingAppointments.isEmpty()) {
             throw new RuntimeException("Agent already has an appointment during this time");
@@ -86,12 +86,15 @@ public class AppointmentService {
         availabilityRepository.save(availability);
 
         // Send confirmation emails and notifications
-        String appointmentDetails = buildAppointmentDetails(savedAppointment);
-        emailService.sendAppointmentConfirmation(customer, appointmentDetails);
-        emailService.sendAppointmentConfirmation(agent, appointmentDetails);
-        
-        notificationService.createAppointmentBookingNotification(customer, appointmentDetails);
-        notificationService.createAppointmentBookingNotification(agent, appointmentDetails);
+        try {
+            String appointmentDetails = buildAppointmentDetails(savedAppointment);
+            emailService.sendAppointmentConfirmation(customer, appointmentDetails);
+            emailService.sendAppointmentConfirmation(agent, appointmentDetails);
+            
+            notificationService.createAppointmentBookingNotification(agent, appointmentDetails);
+        } catch (Exception e) {
+            System.err.println("Warning: Failed to send appointment confirmation notifications: " + e.getMessage());
+        }
 
         return savedAppointment;
     }
@@ -136,12 +139,15 @@ public class AppointmentService {
             availabilityRepository.save(availability);
 
             // Send cancellation emails and notifications
-            String appointmentDetails = buildAppointmentDetails(appointment);
-            emailService.sendAppointmentCancellation(appointment.getCustomer(), appointmentDetails);
-            emailService.sendAppointmentCancellation(appointment.getAgent(), appointmentDetails);
-            
-            notificationService.createAppointmentCancellationNotification(appointment.getCustomer(), appointmentDetails);
-            notificationService.createAppointmentCancellationNotification(appointment.getAgent(), appointmentDetails);
+            try {
+                String appointmentDetails = buildAppointmentDetails(appointment);
+                emailService.sendAppointmentCancellation(appointment.getCustomer(), appointmentDetails);
+                emailService.sendAppointmentCancellation(appointment.getAgent(), appointmentDetails);
+                
+                notificationService.createAppointmentCancellationNotification(appointment.getAgent(), appointmentDetails);
+            } catch (Exception e) {
+                System.err.println("Warning: Failed to send appointment cancellation notifications: " + e.getMessage());
+            }
         }
 
         return updatedAppointment;

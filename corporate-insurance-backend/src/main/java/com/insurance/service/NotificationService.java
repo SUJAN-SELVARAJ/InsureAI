@@ -28,13 +28,19 @@ public class NotificationService {
     private EmailService emailService;
 
     public Notification createNotification(User user, Notification.NotificationType type, String title, String message) {
-        Notification notification = new Notification(user, type, title, message);
-        Notification savedNotification = notificationRepository.save(notification);
-        
-        // Send email asynchronously
-        sendNotificationEmail(savedNotification);
-        
-        return savedNotification;
+        try {
+            Notification notification = new Notification(user, type, title, message);
+            Notification savedNotification = notificationRepository.save(notification);
+            
+            // Temporarily disable email sending to isolate the issue
+            // sendNotificationEmail(savedNotification);
+            
+            return savedNotification;
+        } catch (Exception e) {
+            System.err.println("Error creating notification: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to create notification: " + e.getMessage());
+        }
     }
 
     @Async

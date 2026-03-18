@@ -74,6 +74,8 @@ public class SecurityConfig {
                 
                 // Agent endpoints
                 .requestMatchers("/api/agent/**").hasRole("AGENT")
+                .requestMatchers(HttpMethod.GET, "/api/availability/available").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/availability/agent/*/available").authenticated()
                 .requestMatchers("/api/availability/**").hasRole("AGENT")
                 
                 // Customer endpoints

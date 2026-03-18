@@ -33,18 +33,14 @@ const AppointmentScheduler = ({ onSuccess }) => {
 
   const fetchAgents = async () => {
     try {
-      const response = await API.get('/availability/available?date=' + new Date().toISOString().split('T')[0]);
-      // Extract unique agents from available slots
-      const uniqueAgents = response.data.reduce((acc, slot) => {
-        if (!acc.find(agent => agent.id === slot.agent.id)) {
-          acc.push(slot.agent);
-        }
-        return acc;
-      }, []);
-      setAgents(uniqueAgents);
+      setLoading(true);
+      const response = await API.get('/customer/agents');
+      setAgents(response.data);
     } catch (error) {
       console.error('Failed to fetch agents:', error);
-      toast.error('Failed to fetch available agents');
+      toast.error('Failed to fetch agents');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,11 +82,45 @@ const AppointmentScheduler = ({ onSuccess }) => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      await API.post('/appointments', data);
+
+      const payload = {
+        notes: data.notes,
+        agentId: Number(selectedAgent),
+        availabilityId: Number(selectedSlot.id),
+        appointmentDate: selectedDate, // Use guaranteed string YYYY-MM-DD
+        // Ensure startTime and endTime are properly formatted strings
+        startTime: Array.isArray(selectedSlot.startTime)
+          ? selectedSlot.startTime.map(n => String(n).padStart(2, '0')).join(':')
+          : selectedSlot.startTime,
+        endTime: Array.isArray(selectedSlot.endTime)
+          ? selectedSlot.endTime.map(n => String(n).padStart(2, '0')).join(':')
+          : selectedSlot.endTime
+      };
+
+      // If time format is missing seconds (HH:mm), Jackson handles it, but adding :00 can be safer
+      if (payload.startTime && payload.startTime.length === 5) payload.startTime += ':00';
+      if (payload.endTime && payload.endTime.length === 5) payload.endTime += ':00';
+
+      await API.post('/appointments', payload);
       onSuccess();
       resetForm();
     } catch (error) {
-      const message = error.response?.data?.message || 'Failed to book appointment';
+      let message = 'Failed to book appointment';
+      if (error.response?.data) {
+        if (typeof error.response.data === 'string') {
+          message = error.response.data; // Handles "Error: ..." string responses
+        } else if (error.response.data.message) {
+          message = error.response.data.message;
+        } else if (error.response.data.error) {
+          message = error.response.data.error;
+        } else if (typeof error.response.data === 'object') {
+          // Handle spring validation field errors
+          const fieldErrors = Object.values(error.response.data);
+          if (fieldErrors.length > 0) {
+            message = fieldErrors[0];
+          }
+        }
+      }
       toast.error(message);
     } finally {
       setLoading(false);
@@ -105,12 +135,23 @@ const AppointmentScheduler = ({ onSuccess }) => {
     setStep(1);
   };
 
-  const formatTime = (timeString) => {
-    const [hours, minutes] = timeString.split(':');
-    const hour = parseInt(hours);
+  const formatTime = (timeData) => {
+    if (!timeData) return '';
+    let hours, minutes;
+
+    if (Array.isArray(timeData)) {
+      hours = timeData[0];
+      minutes = timeData[1] !== undefined ? timeData[1] : 0;
+    } else {
+      const parts = String(timeData).split(':');
+      hours = parts[0];
+      minutes = parts[1];
+    }
+
+    const hour = parseInt(hours, 10);
     const ampm = hour >= 12 ? 'PM' : 'AM';
     const displayHour = hour % 12 || 12;
-    return `${displayHour}:${minutes} ${ampm}`;
+    return `${displayHour}:${String(minutes).padStart(2, '0')} ${ampm}`;
   };
 
   const getMinDate = () => {
@@ -131,25 +172,22 @@ const AppointmentScheduler = ({ onSuccess }) => {
           <div className="flex items-center justify-between">
             {[1, 2, 3, 4].map((stepNumber) => (
               <div key={stepNumber} className="flex items-center">
-                <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium ${
-                  step >= stepNumber
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-500'
-                }`}>
+                <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium ${step >= stepNumber
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-500'
+                  }`}>
                   {step > stepNumber ? <Check className="h-4 w-4" /> : stepNumber}
                 </div>
-                <span className={`ml-2 text-sm ${
-                  step >= stepNumber ? 'text-blue-600' : 'text-gray-500'
-                }`}>
+                <span className={`ml-2 text-sm ${step >= stepNumber ? 'text-blue-600' : 'text-gray-500'
+                  }`}>
                   {stepNumber === 1 && 'Select Agent'}
                   {stepNumber === 2 && 'Select Date'}
                   {stepNumber === 3 && 'Select Time'}
                   {stepNumber === 4 && 'Confirm'}
                 </span>
                 {stepNumber < 4 && (
-                  <div className={`ml-4 w-12 h-0.5 ${
-                    step > stepNumber ? 'bg-blue-600' : 'bg-gray-200'
-                  }`} />
+                  <div className={`ml-4 w-12 h-0.5 ${step > stepNumber ? 'bg-blue-600' : 'bg-gray-200'
+                    }`} />
                 )}
               </div>
             ))}
@@ -257,7 +295,7 @@ const AppointmentScheduler = ({ onSuccess }) => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
                 <h3 className="text-lg font-medium text-gray-900 mb-4">Confirm Appointment Details</h3>
-                
+
                 <div className="bg-gray-50 rounded-lg p-4 mb-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>

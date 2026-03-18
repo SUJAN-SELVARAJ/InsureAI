@@ -17,7 +17,7 @@ const NotificationList = () => {
   const fetchNotifications = async () => {
     try {
       setLoading(true);
-      const endpoint = showUnreadOnly ? '/api/notifications/unread' : '/api/notifications';
+      const endpoint = showUnreadOnly ? '/notifications/unread' : '/notifications';
       const response = await API.get(endpoint);
       setNotifications(response.data);
     } catch (error) {
@@ -30,7 +30,7 @@ const NotificationList = () => {
 
   const fetchUnreadCount = async () => {
     try {
-      const response = await API.get('/api/notifications/unread/count');
+      const response = await API.get('/notifications/unread/count');
       setUnreadCount(response.data);
     } catch (error) {
       console.error('Failed to fetch unread count:', error);
@@ -39,7 +39,7 @@ const NotificationList = () => {
 
   const markAsRead = async (notificationId) => {
     try {
-      await API.put(`/api/notifications/${notificationId}/read`);
+      await API.put(`/notifications/${notificationId}/read`);
       setNotifications(prev => 
         prev.map(notif => 
           notif.id === notificationId ? { ...notif, isRead: true } : notif
@@ -53,7 +53,7 @@ const NotificationList = () => {
 
   const markAllAsRead = async () => {
     try {
-      await API.put('/api/notifications/read-all');
+      await API.put('/notifications/read-all');
       setNotifications(prev => 
         prev.map(notif => ({ ...notif, isRead: true }))
       );
@@ -66,7 +66,7 @@ const NotificationList = () => {
 
   const deleteNotification = async (notificationId) => {
     try {
-      await API.delete(`/api/notifications/${notificationId}`);
+      await API.delete(`/notifications/${notificationId}`);
       setNotifications(prev => prev.filter(notif => notif.id !== notificationId));
       const deletedNotification = notifications.find(n => n.id === notificationId);
       if (deletedNotification && !deletedNotification.isRead) {
@@ -81,7 +81,7 @@ const NotificationList = () => {
   const getNotificationIcon = (type) => {
     switch (type) {
       case 'APPOINTMENT_BOOKED':
-        return <Calendar className="h-5 w-5 text-blue-500" />;
+        return <Calendar className="h-5 w-5 text-cyan-500" />;
       case 'APPOINTMENT_CANCELLED':
         return <X className="h-5 w-5 text-red-500" />;
       case 'APPOINTMENT_REMINDER':
@@ -89,7 +89,7 @@ const NotificationList = () => {
       case 'PLAN_EXPIRY':
         return <FileText className="h-5 w-5 text-purple-500" />;
       default:
-        return <Info className="h-5 w-5 text-gray-500" />;
+        return <Info className="h-5 w-5 text-gray-400" />;
     }
   };
 
@@ -120,12 +120,12 @@ const NotificationList = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="bg-white shadow-lg rounded-lg">
-        <div className="px-6 py-4 border-b border-gray-200">
+      <div className="bg-[#111827] shadow border-b border-gray-800-lg rounded-lg">
+        <div className="px-6 py-4 border-b border-gray-800">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <Bell className="h-6 w-6 text-blue-600 mr-3" />
-              <h2 className="text-xl font-semibold text-gray-900">Notifications</h2>
+              <Bell className="h-6 w-6 text-cyan-500 mr-3" />
+              <h2 className="text-xl font-semibold text-white">Notifications</h2>
               {unreadCount > 0 && (
                 <span className="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                   {unreadCount} unread
@@ -138,7 +138,7 @@ const NotificationList = () => {
                 className={`px-3 py-1 rounded-md text-sm font-medium ${
                   showUnreadOnly
                     ? 'bg-blue-100 text-blue-700'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-gray-100 text-gray-300 hover:bg-gray-200'
                 }`}
               >
                 {showUnreadOnly ? 'Show All' : 'Unread Only'}
@@ -155,12 +155,12 @@ const NotificationList = () => {
           </div>
         </div>
 
-        <div className="divide-y divide-gray-200">
+        <div className="divide-y divide-gray-800">
           {notifications.length === 0 ? (
             <div className="p-8 text-center">
               <Bell className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No notifications</h3>
-              <p className="text-gray-500">
+              <h3 className="text-lg font-medium text-white mb-2">No notifications</h3>
+              <p className="text-gray-400">
                 {showUnreadOnly 
                   ? "You have no unread notifications."
                   : "You don't have any notifications yet."}
@@ -170,8 +170,8 @@ const NotificationList = () => {
             notifications.map((notification) => (
               <div
                 key={notification.id}
-                className={`p-6 hover:bg-gray-50 transition-colors ${
-                  !notification.isRead ? 'bg-blue-50' : ''
+                className={`p-6 hover:bg-[#1F2937] transition-colors ${
+                  !notification.isRead ? 'bg-[#1F2937]' : ''
                 }`}
               >
                 <div className="flex items-start justify-between">
@@ -181,21 +181,21 @@ const NotificationList = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium text-gray-900">
+                        <p className="text-sm font-medium text-white">
                           {notification.title}
                         </p>
                         <div className="flex items-center space-x-2 ml-4">
                           {!notification.isRead && (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-cyan-900 text-cyan-200">
                               New
                             </span>
                           )}
-                          <span className="text-xs text-gray-500">
+                          <span className="text-xs text-gray-400">
                             {formatDate(notification.createdAt)}
                           </span>
                         </div>
                       </div>
-                      <p className="mt-1 text-sm text-gray-600 whitespace-pre-line">
+                      <p className="mt-1 text-sm text-gray-400 whitespace-pre-line">
                         {notification.message}
                       </p>
                     </div>

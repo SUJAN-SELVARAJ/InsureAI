@@ -76,10 +76,10 @@ function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0F1C] flex items-center justify-center text-white">
-      <div className="bg-[#111827] p-10 rounded-2xl shadow-2xl w-[400px]">
+    <div className="min-h-screen bg-[#0A0F1C] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="bg-[#111827] p-10 rounded-2xl shadow-xl w-full max-w-md border border-gray-800">
 
-        <h2 className="text-2xl font-semibold mb-6 text-center">
+        <h2 className="text-2xl font-semibold mb-6 text-center text-white">
           {isLogin ? "Login to InsureAI" : "Create InsureAI Account"}
         </h2>
 
@@ -90,7 +90,7 @@ function Landing() {
             placeholder="First Name"
             value={formData.firstName}
             onChange={handleChange}
-            className="w-full mb-4 px-4 py-3 rounded-xl bg-[#1F2937] border border-gray-600 outline-none"
+            className="w-full mb-4 px-4 py-3 rounded-xl bg-[#1F2937] border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent placeholder-gray-400"
           />
         )}
 
@@ -101,7 +101,7 @@ function Landing() {
             placeholder="Last Name"
             value={formData.lastName}
             onChange={handleChange}
-            className="w-full mb-4 px-4 py-3 rounded-xl bg-[#1F2937] border border-gray-600 outline-none"
+            className="w-full mb-4 px-4 py-3 rounded-xl bg-[#1F2937] border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent placeholder-gray-400"
           />
         )}
 
@@ -111,7 +111,7 @@ function Landing() {
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
-          className="w-full mb-4 px-4 py-3 rounded-xl bg-[#1F2937] border border-gray-600 outline-none"
+          className="w-full mb-4 px-4 py-3 rounded-xl bg-[#1F2937] border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent placeholder-gray-400"
         />
 
         <input
@@ -120,7 +120,7 @@ function Landing() {
           placeholder="Password"
           value={formData.password}
           onChange={handleChange}
-          className="w-full mb-4 px-4 py-3 rounded-xl bg-[#1F2937] border border-gray-600 outline-none"
+          className="w-full mb-4 px-4 py-3 rounded-xl bg-[#1F2937] border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent placeholder-gray-400"
         />
 
         {!isLogin && (
@@ -128,7 +128,7 @@ function Landing() {
             name="role"
             value={formData.role}
             onChange={handleChange}
-            className="w-full mb-6 px-4 py-3 rounded-xl bg-[#1F2937] text-white border border-gray-600 outline-none"
+            className="w-full mb-6 px-4 py-3 rounded-xl bg-[#1F2937] border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
           >
             <option value="CUSTOMER">Customer</option>
             <option value="AGENT">Agent</option>
@@ -141,7 +141,7 @@ function Landing() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-cyan-500 hover:bg-cyan-600 py-3 rounded-xl font-semibold disabled:opacity-50"
+              className="w-full bg-cyan-500 hover:bg-cyan-600 text-white py-3 rounded-xl font-semibold disabled:opacity-50 transition-colors"
             >
               {loading ? "Logging in..." : "Login"}
             </button>
@@ -151,7 +151,7 @@ function Landing() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-cyan-500 hover:bg-cyan-600 py-3 rounded-xl font-semibold disabled:opacity-50"
+              className="w-full bg-cyan-500 hover:bg-cyan-600 text-white py-3 rounded-xl font-semibold disabled:opacity-50 transition-colors"
             >
               {loading ? "Creating account..." : "Sign Up"}
             </button>
@@ -160,7 +160,7 @@ function Landing() {
 
         <p
           onClick={() => setIsLogin(!isLogin)}
-          className="text-sm text-gray-400 mt-4 text-center cursor-pointer hover:text-cyan-400"
+          className="text-sm text-gray-400 mt-4 text-center cursor-pointer hover:text-cyan-400 transition-colors font-medium"
         >
           {isLogin
             ? "Don't have an account? Sign Up"

@@ -22,7 +22,7 @@ public class CustomerPlan {
     private User customer;
     
     @NotNull(message = "Plan is required")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "plan_id", nullable = false)
     private InsurancePlan plan;
     

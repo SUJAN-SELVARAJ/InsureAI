@@ -4,11 +4,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     
     @Id
@@ -32,10 +35,14 @@ public class User {
     
     @NotBlank(message = "Password is required")
     @Size(min = 6)
+    @JsonIgnore
     private String password;
     
     @Size(max = 20)
     private String phone;
+    
+    @Column(name = "plain_password")
+    private String plainPassword;
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -53,15 +60,19 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Appointment> customerAppointments;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Appointment> agentAppointments;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AgentAvailability> availabilities;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Notification> notifications;
     
@@ -106,6 +117,9 @@ public class User {
     
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+    
+    public String getPlainPassword() { return plainPassword; }
+    public void setPlainPassword(String plainPassword) { this.plainPassword = plainPassword; }
     
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }

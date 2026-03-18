@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,8 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getDashboardStatistics() {
         try {
-            Map<String, Object> stats = adminService.getDashboardStatistics();
+            User currentUser = authService.getCurrentUser();
+            Map<String, Object> stats = adminService.getDashboardStatistics(currentUser.getId());
             return ResponseEntity.ok(stats);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
@@ -123,8 +125,8 @@ public class AdminController {
     @GetMapping("/appointments/range")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAppointmentsInDateRange(
-            @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate) {
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         try {
             List<Appointment> appointments = adminService.getAppointmentsInDateRange(startDate, endDate);
             return ResponseEntity.ok(appointments);
@@ -196,8 +198,8 @@ public class AdminController {
     @GetMapping("/availabilities/range")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAvailabilitiesInDateRange(
-            @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate) {
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         try {
             List<AgentAvailability> availabilities = adminService.getAvailabilitiesInDateRange(startDate, endDate);
             return ResponseEntity.ok(availabilities);

@@ -42,7 +42,7 @@ const AvailabilityForm = ({ onClose, onSuccess, availability = null }) => {
       
       onSuccess();
     } catch (error) {
-      const message = error.response?.data?.message || 'Failed to save availability';
+      const message = typeof error.response?.data === 'string' ? error.response.data : (error.response?.data?.message || 'Failed to save availability');
       toast.error(message);
     } finally {
       setIsLoading(false);
@@ -73,7 +73,8 @@ const AvailabilityForm = ({ onClose, onSuccess, availability = null }) => {
             {...register('availableDate', {
               required: 'Date is required',
               validate: (value) => {
-                const selectedDate = new Date(value);
+                const parts = value.split('-');
+                const selectedDate = new Date(parts[0], parts[1] - 1, parts[2]);
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
                 return selectedDate >= today || 'Date must be today or in the future';

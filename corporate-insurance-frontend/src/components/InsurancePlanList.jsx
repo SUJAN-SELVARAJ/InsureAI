@@ -17,12 +17,12 @@ const InsurancePlanList = ({ onSelectPlan, userType }) => {
   const fetchPlans = async () => {
     try {
       setLoading(true);
-      let endpoint = '/api/plans';
-      
+      let endpoint = '/plans';
+
       if (filter !== 'all') {
-        endpoint = `/api/plans/type/${filter}`;
+        endpoint = `/plans/type/${filter}`;
       } else if (sortBy === 'premium') {
-        endpoint = '/api/plans/sorted-by-premium';
+        endpoint = '/plans/sorted-by-premium';
       }
 
       const response = await API.get(endpoint);
@@ -63,7 +63,7 @@ const InsurancePlanList = ({ onSelectPlan, userType }) => {
       case 'HEALTH':
         return 'bg-green-100 text-green-800';
       case 'LIFE':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-cyan-900 text-cyan-200';
       case 'PROPERTY':
         return 'bg-purple-100 text-purple-800';
       case 'LIABILITY':
@@ -71,7 +71,7 @@ const InsurancePlanList = ({ onSelectPlan, userType }) => {
       case 'VEHICLE':
         return 'bg-red-100 text-red-800';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-100 text-gray-200';
     }
   };
 
@@ -96,7 +96,7 @@ const InsurancePlanList = ({ onSelectPlan, userType }) => {
               placeholder="Search plans..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="pl-10 pr-4 py-2 w-full border border-gray-700 rounded-md focus:ring-cyan-500 focus:border-cyan-500"
             />
           </div>
 
@@ -106,7 +106,7 @@ const InsurancePlanList = ({ onSelectPlan, userType }) => {
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 appearance-none"
+              className="pl-10 pr-4 py-2 w-full border border-gray-700 rounded-md focus:ring-cyan-500 focus:border-cyan-500 appearance-none"
             >
               <option value="all">All Types</option>
               <option value="health">Health</option>
@@ -122,7 +122,7 @@ const InsurancePlanList = ({ onSelectPlan, userType }) => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 w-full border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="px-4 py-2 w-full border border-gray-700 rounded-md focus:ring-cyan-500 focus:border-cyan-500"
             >
               <option value="name">Sort by Name</option>
               <option value="premium">Sort by Premium (Low to High)</option>
@@ -133,11 +133,11 @@ const InsurancePlanList = ({ onSelectPlan, userType }) => {
 
       {/* Plans Grid */}
       {plans.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-lg shadow">
+        <div className="text-center py-12 bg-[#111827] rounded-xl shadow-lg border border-gray-800">
           <Shield className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No insurance plans found</h3>
-          <p className="text-gray-500">
-            {searchTerm || filter !== 'all' 
+          <h3 className="text-lg font-medium text-white mb-2">No insurance plans found</h3>
+          <p className="text-gray-400">
+            {searchTerm || filter !== 'all'
               ? "Try adjusting your search or filter criteria."
               : "No insurance plans are available at the moment."}
           </p>
@@ -147,18 +147,18 @@ const InsurancePlanList = ({ onSelectPlan, userType }) => {
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+              className="bg-[#111827] rounded-lg shadow-md border border-gray-800 hover:shadow-lg transition-shadow cursor-pointer"
               onClick={() => handlePlanSelect(plan)}
             >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">{plan.planName}</h3>
+                  <h3 className="text-lg font-semibold text-white">{plan.planName}</h3>
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPlanTypeColor(plan.planType)}`}>
                     {plan.planType}
                   </span>
                 </div>
 
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                <p className="text-gray-400 text-sm mb-4 line-clamp-3">
                   {plan.description || 'No description available for this plan.'}
                 </p>
 
@@ -167,9 +167,9 @@ const InsurancePlanList = ({ onSelectPlan, userType }) => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <Shield className="h-4 w-4 text-gray-400 mr-2" />
-                        <span className="text-sm text-gray-600">Coverage</span>
+                        <span className="text-sm text-gray-400">Coverage</span>
                       </div>
-                      <span className="text-sm font-medium text-gray-900">
+                      <span className="text-sm font-medium text-white">
                         {formatCurrency(plan.coverageAmount)}
                       </span>
                     </div>
@@ -178,9 +178,9 @@ const InsurancePlanList = ({ onSelectPlan, userType }) => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <DollarSign className="h-4 w-4 text-gray-400 mr-2" />
-                      <span className="text-sm text-gray-600">Premium</span>
+                      <span className="text-sm text-gray-400">Premium</span>
                     </div>
-                    <span className="text-sm font-medium text-gray-900">
+                    <span className="text-sm font-medium text-white">
                       {formatCurrency(plan.premiumAmount)}/month
                     </span>
                   </div>
@@ -188,15 +188,15 @@ const InsurancePlanList = ({ onSelectPlan, userType }) => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <Calendar className="h-4 w-4 text-gray-400 mr-2" />
-                      <span className="text-sm text-gray-600">Duration</span>
+                      <span className="text-sm text-gray-400">Duration</span>
                     </div>
-                    <span className="text-sm font-medium text-gray-900">
+                    <span className="text-sm font-medium text-white">
                       {plan.durationMonths} months
                     </span>
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-gray-200">
+                <div className="mt-6 pt-4 border-t border-gray-800">
                   <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors text-sm font-medium">
                     {userType === 'customer' ? 'View Details' : 'Select Plan'}
                   </button>

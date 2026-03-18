@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "insurance_plans")
@@ -50,6 +51,7 @@ public class InsurancePlan {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CustomerPlan> customerPlans;
     

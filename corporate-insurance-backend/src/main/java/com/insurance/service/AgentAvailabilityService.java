@@ -2,8 +2,10 @@ package com.insurance.service;
 
 import com.insurance.dto.AvailabilityRequest;
 import com.insurance.entity.AgentAvailability;
+import com.insurance.entity.Appointment;
 import com.insurance.entity.User;
 import com.insurance.repository.AgentAvailabilityRepository;
+import com.insurance.repository.AppointmentRepository;
 import com.insurance.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class AgentAvailabilityService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     public AgentAvailability createAvailability(Long agentId, AvailabilityRequest request) {
         User agent = userRepository.findById(agentId)
@@ -61,7 +66,24 @@ public class AgentAvailabilityService {
         User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found"));
 
-        return availabilityRepository.findByAgentAndAvailableDate(agent, date);
+        List<AgentAvailability> availabilities = availabilityRepository.findByAgentAndAvailableDate(agent, date);
+        
+        // For each availability, check if it has an appointment and include appointment details
+        for (AgentAvailability availability : availabilities) {
+            if (availability.getIsBooked()) {
+                // Find the appointment for this availability slot
+                List<Appointment> appointments = appointmentRepository.findByAgentIdAndAppointmentDateAndTimeRange(
+                    agentId, date, availability.getStartTime(), availability.getEndTime());
+                
+                if (!appointments.isEmpty()) {
+                    // Set appointment details in availability
+                    Appointment appointment = appointments.get(0);
+                    availability.setAppointmentDetails(appointment);
+                }
+            }
+        }
+        
+        return availabilities;
     }
 
     public List<AgentAvailability> getAllAvailableSlots(LocalDate date) {

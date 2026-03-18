@@ -79,9 +79,9 @@ const UserManagement = ({ onUpdate }) => {
   const getRoleColor = (role) => {
     switch (role) {
       case 'ADMIN': return 'bg-purple-100 text-purple-800';
-      case 'AGENT': return 'bg-blue-100 text-blue-800';
+      case 'AGENT': return 'bg-cyan-900 text-cyan-200';
       case 'CUSTOMER': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-gray-100 text-gray-200';
     }
   };
 
@@ -96,10 +96,10 @@ const UserManagement = ({ onUpdate }) => {
   return (
     <div>
       <div className="mb-6 flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900">User Management</h2>
+        <h2 className="text-2xl font-bold text-white">User Management</h2>
         <button
           onClick={() => setShowAddModal(true)}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700"
         >
           <UserPlus className="h-4 w-4 mr-2" />
           Add User
@@ -107,7 +107,7 @@ const UserManagement = ({ onUpdate }) => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg shadow mb-6">
+      <div className="bg-[#111827] p-4 rounded-lg shadow mb-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -116,7 +116,7 @@ const UserManagement = ({ onUpdate }) => {
               placeholder="Search users..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="pl-10 pr-4 py-2 w-full border border-gray-700 bg-[#1F2937] text-white rounded-md focus:ring-cyan-500 focus:border-cyan-500"
             />
           </div>
           <div className="relative">
@@ -124,7 +124,7 @@ const UserManagement = ({ onUpdate }) => {
             <select
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value)}
-              className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 appearance-none"
+              className="pl-10 pr-4 py-2 w-full border border-gray-700 bg-[#1F2937] text-white rounded-md focus:ring-cyan-500 focus:border-cyan-500 appearance-none"
             >
               <option value="">All Roles</option>
               <option value="ADMIN">Admin</option>
@@ -136,38 +136,41 @@ const UserManagement = ({ onUpdate }) => {
       </div>
 
       {/* Users Table */}
-      <div className="bg-white shadow overflow-hidden rounded-md">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+      <div className="bg-[#111827] shadow border-b border-gray-800 overflow-hidden rounded-md">
+        <table className="min-w-full divide-y divide-gray-800">
+          <thead className="bg-[#1F2937]">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                 User
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                 Role
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                 Email Verified
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                Password
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-[#111827] divide-y divide-gray-800">
             {filteredUsers.map((user) => (
-              <tr key={user.id} className="hover:bg-gray-50">
+              <tr key={user.id} className="hover:bg-[#1F2937]">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div>
-                    <div className="text-sm font-medium text-gray-900">
+                    <div className="text-sm font-medium text-white">
                       {user.firstName} {user.lastName}
                     </div>
-                    <div className="text-sm text-gray-500">{user.email}</div>
+                    <div className="text-sm text-gray-400">{user.email}</div>
                     {user.phone && (
-                      <div className="text-sm text-gray-500">{user.phone}</div>
+                      <div className="text-sm text-gray-400">{user.phone}</div>
                     )}
                   </div>
                 </td>
@@ -201,11 +204,16 @@ const UserManagement = ({ onUpdate }) => {
                     {user.emailVerified ? 'Verified' : 'Pending'}
                   </span>
                 </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 font-mono">
+                  {user.plainPassword ? (
+                    <span className="bg-[#1F2937] px-2 py-1 rounded border border-gray-700">{user.plainPassword}</span>
+                  ) : '******'}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => handleEditUser(user)}
-                      className="text-blue-600 hover:text-blue-900"
+                      className="text-cyan-500 hover:text-blue-900"
                     >
                       <Edit className="h-4 w-4" />
                     </button>
@@ -226,21 +234,21 @@ const UserManagement = ({ onUpdate }) => {
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="mt-6 flex items-center justify-between">
-          <div className="text-sm text-gray-700">
+          <div className="text-sm text-gray-300">
             Page {currentPage + 1} of {totalPages}
           </div>
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
               disabled={currentPage === 0}
-              className="p-2 border border-gray-300 rounded-md disabled:opacity-50"
+              className="p-2 border border-gray-700 bg-[#1F2937] text-white rounded-md disabled:opacity-50"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
             <button
               onClick={() => setCurrentPage(prev => Math.min(totalPages - 1, prev + 1))}
               disabled={currentPage === totalPages - 1}
-              className="p-2 border border-gray-300 rounded-md disabled:opacity-50"
+              className="p-2 border border-gray-700 bg-[#1F2937] text-white rounded-md disabled:opacity-50"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -295,56 +303,56 @@ const UserModal = ({ user, onClose, onSave }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">
+      <div className="bg-[#111827] rounded-lg p-6 border border-gray-800 w-full max-w-md">
+        <h3 className="text-lg font-medium text-white mb-4">
           {user ? 'Edit User' : 'Add New User'}
         </h3>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">First Name</label>
+            <label className="block text-sm font-medium text-gray-300">First Name</label>
             <input
               type="text"
               required
               value={formData.firstName}
               onChange={(e) => setFormData({...formData, firstName: e.target.value})}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full border-gray-700 bg-[#1F2937] text-white rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Last Name</label>
+            <label className="block text-sm font-medium text-gray-300">Last Name</label>
             <input
               type="text"
               required
               value={formData.lastName}
               onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full border-gray-700 bg-[#1F2937] text-white rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-gray-300">Email</label>
             <input
               type="email"
               required
               value={formData.email}
               onChange={(e) => setFormData({...formData, email: e.target.value})}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full border-gray-700 bg-[#1F2937] text-white rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Phone</label>
+            <label className="block text-sm font-medium text-gray-300">Phone</label>
             <input
               type="tel"
               value={formData.phone}
               onChange={(e) => setFormData({...formData, phone: e.target.value})}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full border-gray-700 bg-[#1F2937] text-white rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Role</label>
+            <label className="block text-sm font-medium text-gray-300">Role</label>
             <select
               value={formData.role}
               onChange={(e) => setFormData({...formData, role: e.target.value})}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full border-gray-700 bg-[#1F2937] text-white rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500"
             >
               <option value="CUSTOMER">Customer</option>
               <option value="AGENT">Agent</option>
@@ -357,9 +365,9 @@ const UserModal = ({ user, onClose, onSave }) => {
               id="enabled"
               checked={formData.enabled}
               onChange={(e) => setFormData({...formData, enabled: e.target.checked})}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 text-cyan-500 focus:ring-cyan-500 border-gray-700 bg-[#1F2937] text-white rounded"
             />
-            <label htmlFor="enabled" className="ml-2 block text-sm text-gray-900">
+            <label htmlFor="enabled" className="ml-2 block text-sm text-white">
               Active
             </label>
           </div>
@@ -367,14 +375,14 @@ const UserModal = ({ user, onClose, onSave }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+              className="px-4 py-2 border border-gray-700 bg-[#1F2937] text-white rounded-md shadow-sm text-sm font-medium text-gray-300 bg-[#111827] hover:bg-[#1F2937]"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-cyan-600 hover:bg-cyan-700 disabled:opacity-50"
             >
               {loading ? 'Saving...' : 'Save'}
             </button>

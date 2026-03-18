@@ -15,6 +15,7 @@ com\insurance\entity\EmailVerificationToken.class
 com\insurance\service\TokenService.class
 com\insurance\service\InsurancePlanService.class
 com\insurance\controller\AgentAvailabilityController.class
+com\insurance\controller\CustomerController.class
 com\insurance\service\AuthService.class
 com\insurance\repository\PasswordResetTokenRepository.class
 com\insurance\dto\RegisterRequest.class
@@ -27,6 +28,7 @@ com\insurance\security\CustomUserDetailsService$UserPrincipal.class
 com\insurance\dto\AuthResponse.class
 com\insurance\CorporateInsuranceApplication.class
 com\insurance\service\AppointmentService.class
+com\insurance\controller\AgentController.class
 com\insurance\service\EmailService.class
 com\insurance\entity\AgentAvailability.class
 com\insurance\security\JwtAuthenticationFilter.class

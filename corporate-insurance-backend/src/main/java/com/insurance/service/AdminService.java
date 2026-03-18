@@ -2,12 +2,14 @@ package com.insurance.service;
 
 import com.insurance.entity.*;
 import com.insurance.repository.*;
+import com.insurance.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +34,13 @@ public class AdminService {
     @Autowired
     private CustomerPlanRepository customerPlanRepository;
 
-    public Map<String, Object> getDashboardStatistics() {
+    @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public Map<String, Object> getDashboardStatistics(Long adminId) {
         Map<String, Object> stats = new HashMap<>();
 
         // User statistics
@@ -93,6 +101,13 @@ public class AdminService {
     public User createUser(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("Email already exists");
+        }
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            user.setPlainPassword("Password@123");
+            user.setPassword(passwordEncoder.encode("Password@123"));
+        } else {
+            user.setPlainPassword(user.getPassword());
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         return userRepository.save(user);
     }

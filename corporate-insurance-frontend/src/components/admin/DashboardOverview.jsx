@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Users, Calendar, FileText, Clock, TrendingUp, Activity } from 'lucide-react';
 import API from '../../api';
 
-const DashboardOverview = () => {
+const DashboardOverview = ({ onNavigate }) => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -32,14 +32,14 @@ const DashboardOverview = () => {
   if (!stats) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">Failed to load dashboard statistics</p>
+        <p className="text-gray-400">Failed to load dashboard statistics</p>
       </div>
     );
   }
 
   const StatCard = ({ title, value, icon: Icon, color = 'blue' }) => {
     const colorClasses = {
-      blue: 'bg-blue-500',
+      blue: 'bg-[#1F2937]0',
       green: 'bg-green-500',
       yellow: 'bg-yellow-500',
       purple: 'bg-purple-500',
@@ -48,7 +48,7 @@ const DashboardOverview = () => {
     };
 
     return (
-      <div className="bg-white overflow-hidden shadow rounded-lg">
+      <div className="bg-[#111827] overflow-hidden shadow-lg rounded-xl border border-gray-800">
         <div className="p-5">
           <div className="flex items-center">
             <div className={`flex-shrink-0 ${colorClasses[color]} rounded-md p-3`}>
@@ -56,8 +56,8 @@ const DashboardOverview = () => {
             </div>
             <div className="ml-5 w-0 flex-1">
               <dl>
-                <dt className="text-sm font-medium text-gray-500 truncate">{title}</dt>
-                <dd className="text-lg font-medium text-gray-900">{value}</dd>
+                <dt className="text-sm font-medium text-gray-400 truncate">{title}</dt>
+                <dd className="text-lg font-medium text-white">{value}</dd>
               </dl>
             </div>
           </div>
@@ -69,8 +69,8 @@ const DashboardOverview = () => {
   return (
     <div>
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900">Dashboard Overview</h2>
-        <p className="mt-1 text-sm text-gray-500">
+        <h2 className="text-2xl font-bold text-white">Dashboard Overview</h2>
+        <p className="mt-1 text-sm text-gray-400">
           System statistics and key metrics at a glance
         </p>
       </div>
@@ -106,104 +106,116 @@ const DashboardOverview = () => {
       {/* Detailed Statistics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* User Statistics */}
-        <div className="bg-white shadow rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">User Statistics</h3>
+        <div className="bg-[#111827] shadow border-b border-gray-800 rounded-lg">
+          <div className="px-6 py-4 border-b border-gray-800">
+            <h3 className="text-lg font-medium text-white">User Statistics</h3>
           </div>
           <div className="p-6">
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">{stats.users?.customers || 0}</div>
-                <div className="text-sm text-gray-500">Customers</div>
+                <div className="text-2xl font-bold text-cyan-500">{stats.users?.customers || 0}</div>
+                <div className="text-sm text-gray-400">Customers</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600">{stats.users?.agents || 0}</div>
-                <div className="text-sm text-gray-500">Agents</div>
+                <div className="text-sm text-gray-400">Agents</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-purple-600">{stats.users?.admins || 0}</div>
-                <div className="text-sm text-gray-500">Admins</div>
+                <div className="text-sm text-gray-400">Admins</div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Appointment Statistics */}
-        <div className="bg-white shadow rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">Appointment Status</h3>
+        <div className="bg-[#111827] shadow border-b border-gray-800 rounded-lg">
+          <div className="px-6 py-4 border-b border-gray-800">
+            <h3 className="text-lg font-medium text-white">Appointment Status</h3>
           </div>
           <div className="p-6">
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">{stats.appointments?.scheduled || 0}</div>
-                <div className="text-sm text-gray-500">Scheduled</div>
+                <div className="text-2xl font-bold text-cyan-500">{stats.appointments?.scheduled || 0}</div>
+                <div className="text-sm text-gray-400">Scheduled</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600">{stats.appointments?.completed || 0}</div>
-                <div className="text-sm text-gray-500">Completed</div>
+                <div className="text-sm text-gray-400">Completed</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-red-600">{stats.appointments?.cancelled || 0}</div>
-                <div className="text-sm text-gray-500">Cancelled</div>
+                <div className="text-sm text-gray-400">Cancelled</div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Plan Statistics */}
-        <div className="bg-white shadow rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">Insurance Plans</h3>
+        <div className="bg-[#111827] shadow border-b border-gray-800 rounded-lg">
+          <div className="px-6 py-4 border-b border-gray-800">
+            <h3 className="text-lg font-medium text-white">Insurance Plans</h3>
           </div>
           <div className="p-6">
             <div className="grid grid-cols-2 gap-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">{stats.plans?.total || 0}</div>
-                <div className="text-sm text-gray-500">Total Plans</div>
+                <div className="text-2xl font-bold text-cyan-500">{stats.plans?.total || 0}</div>
+                <div className="text-sm text-gray-400">Total Plans</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600">{stats.plans?.active || 0}</div>
-                <div className="text-sm text-gray-500">Active Plans</div>
+                <div className="text-sm text-gray-400">Active Plans</div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Availability Statistics */}
-        <div className="bg-white shadow rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">Agent Availability</h3>
+        <div className="bg-[#111827] shadow border-b border-gray-800 rounded-lg">
+          <div className="px-6 py-4 border-b border-gray-800">
+            <h3 className="text-lg font-medium text-white">Agent Availability</h3>
           </div>
           <div className="p-6">
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">{stats.availabilities?.total || 0}</div>
-              <div className="text-sm text-gray-500">Total Time Slots</div>
+              <div className="text-2xl font-bold text-cyan-500">{stats.availabilities?.total || 0}</div>
+              <div className="text-sm text-gray-400">Total Time Slots</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="mt-8 bg-white shadow rounded-lg">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-medium text-gray-900">Quick Actions</h3>
+      <div className="mt-8 bg-[#111827] shadow border-b border-gray-800 rounded-lg">
+        <div className="px-6 py-4 border-b border-gray-800">
+          <h3 className="text-lg font-medium text-white">Quick Actions</h3>
         </div>
         <div className="p-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <button className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+            <button
+              onClick={() => onNavigate('users')}
+              className="flex items-center justify-center px-4 py-2 border border-gray-700 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-[#111827] hover:bg-[#1F2937]"
+            >
               <Users className="h-4 w-4 mr-2" />
               Add User
             </button>
-            <button className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+            <button
+              onClick={() => onNavigate('plans')}
+              className="flex items-center justify-center px-4 py-2 border border-gray-700 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-[#111827] hover:bg-[#1F2937]"
+            >
               <FileText className="h-4 w-4 mr-2" />
               Create Plan
             </button>
-            <button className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+            <button
+              onClick={() => onNavigate('appointments')}
+              className="flex items-center justify-center px-4 py-2 border border-gray-700 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-[#111827] hover:bg-[#1F2937]"
+            >
               <Calendar className="h-4 w-4 mr-2" />
               View Reports
             </button>
-            <button className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+            <button
+              onClick={() => onNavigate('availability')}
+              className="flex items-center justify-center px-4 py-2 border border-gray-700 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-[#111827] hover:bg-[#1F2937]"
+            >
               <Activity className="h-4 w-4 mr-2" />
               System Logs
             </button>

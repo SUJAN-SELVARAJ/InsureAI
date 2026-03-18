@@ -1,6 +1,6 @@
 package com.insurance.dto;
 
-import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -16,7 +16,7 @@ public class AppointmentRequest {
     private Long availabilityId;
     
     @NotNull(message = "Appointment date is required")
-    @Future(message = "Appointment date must be in the future")
+    @FutureOrPresent(message = "Appointment date must be in the future or present")    
     private LocalDate appointmentDate;
     
     @NotNull(message = "Start time is required")

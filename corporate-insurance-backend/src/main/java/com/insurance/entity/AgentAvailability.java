@@ -2,14 +2,16 @@ package com.insurance.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
 @Entity
-@Table(name = "agent_availability", 
-       uniqueConstraints = @UniqueConstraint(columnNames = {"agent_id", "available_date", "start_time", "end_time"}))
+@Table(name = "agent_availability")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class AgentAvailability {
     
     @Id
@@ -19,18 +21,19 @@ public class AgentAvailability {
     @NotNull(message = "Agent is required")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agent_id", nullable = false)
+    @JsonIgnoreProperties({"password", "availabilities", "agentAppointments", "customerAppointments", "notifications"})
     private User agent;
     
     @NotNull(message = "Available date is required")
-    @Column(name = "available_date", nullable = false)
+    @Column(name = "available_date")
     private LocalDate availableDate;
     
     @NotNull(message = "Start time is required")
-    @Column(name = "start_time", nullable = false)
+    @Column(name = "start_time")
     private LocalTime startTime;
     
     @NotNull(message = "End time is required")
-    @Column(name = "end_time", nullable = false)
+    @Column(name = "end_time")
     private LocalTime endTime;
     
     @Column(name = "is_booked")
@@ -42,6 +45,11 @@ public class AgentAvailability {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
     
+    // Transient field for appointment details (not stored in database)
+    @Transient
+    private Appointment appointmentDetails;
+    
+    @JsonIgnore
     @OneToMany(mappedBy = "availability", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Appointment> appointments;
     
@@ -90,4 +98,7 @@ public class AgentAvailability {
     
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+    
+    public Appointment getAppointmentDetails() { return appointmentDetails; }
+    public void setAppointmentDetails(Appointment appointmentDetails) { this.appointmentDetails = appointmentDetails; }
 }

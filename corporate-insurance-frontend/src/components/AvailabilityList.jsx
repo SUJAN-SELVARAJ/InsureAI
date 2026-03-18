@@ -48,17 +48,36 @@ const AvailabilityList = ({ onEdit, onDelete, onUpdate }) => {
     fetchAvailabilities();
   };
 
-  const formatTime = (timeString) => {
-    const [hours, minutes] = timeString.split(':');
-    const hour = parseInt(hours);
+  const formatTime = (timeData) => {
+    if (!timeData) return '';
+    let hours, minutes;
+
+    if (Array.isArray(timeData)) {
+      hours = timeData[0];
+      minutes = timeData[1] !== undefined ? timeData[1] : 0;
+    } else {
+      const parts = String(timeData).split(':');
+      hours = parts[0];
+      minutes = parts[1];
+    }
+
+    const hour = parseInt(hours, 10);
     const ampm = hour >= 12 ? 'PM' : 'AM';
     const displayHour = hour % 12 || 12;
-    return `${displayHour}:${minutes} ${ampm}`;
+    return `${displayHour}:${String(minutes).padStart(2, '0')} ${ampm}`;
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateData) => {
+    if (!dateData) return '';
+    let dateObj;
+    if (Array.isArray(dateData)) {
+      // Spring Boot returns [YYYY, MM, DD]
+      dateObj = new Date(dateData[0], dateData[1] - 1, dateData[2]);
+    } else {
+      dateObj = new Date(dateData);
+    }
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+    return dateObj.toLocaleDateString(undefined, options);
   };
 
   if (loading) {
@@ -73,7 +92,7 @@ const AvailabilityList = ({ onEdit, onDelete, onUpdate }) => {
     <div>
       {/* Date Selector */}
       <div className="mb-6">
-        <label htmlFor="dateFilter" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="dateFilter" className="block text-sm font-medium text-gray-300 mb-2">
           <Calendar className="h-4 w-4 inline mr-2" />
           Select Date
         </label>
@@ -82,7 +101,7 @@ const AvailabilityList = ({ onEdit, onDelete, onUpdate }) => {
           id="dateFilter"
           value={selectedDate}
           onChange={(e) => setSelectedDate(e.target.value)}
-          className="block w-full md:w-auto border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          className="block w-full md:w-auto border-gray-700 rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm"
         />
       </div>
 
@@ -97,31 +116,31 @@ const AvailabilityList = ({ onEdit, onDelete, onUpdate }) => {
       )}
 
       {availabilities.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-lg shadow">
+        <div className="text-center py-12 bg-[#111827] rounded-xl shadow-lg border border-gray-800">
           <Calendar className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No availability found</h3>
-          <p className="text-gray-500">
+          <h3 className="text-lg font-medium text-white mb-2">No availability found</h3>
+          <p className="text-gray-400">
             {selectedDate === new Date().toISOString().split('T')[0]
               ? "You haven't set any availability for today."
               : `You haven't set any availability for ${formatDate(selectedDate)}.`}
           </p>
         </div>
       ) : (
-        <div className="bg-white shadow overflow-hidden rounded-md">
-          <ul className="divide-y divide-gray-200">
+        <div className="bg-[#111827] shadow border-b border-gray-800 overflow-hidden rounded-md">
+          <ul className="divide-y divide-gray-800">
             {availabilities.map((availability) => (
-              <li key={availability.id} className="p-6 hover:bg-gray-50">
+              <li key={availability.id} className="p-6 hover:bg-[#1F2937]">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center">
                       <Calendar className="h-5 w-5 text-gray-400 mr-3" />
-                      <span className="text-sm font-medium text-gray-900">
+                      <span className="text-sm font-medium text-white">
                         {formatDate(availability.availableDate)}
                       </span>
                     </div>
                     <div className="mt-2 flex items-center">
                       <Clock className="h-4 w-4 text-gray-400 mr-2" />
-                      <span className="text-sm text-gray-600">
+                      <span className="text-sm text-gray-400">
                         {formatTime(availability.startTime)} - {formatTime(availability.endTime)}
                       </span>
                       {availability.isBooked && (
@@ -135,13 +154,36 @@ const AvailabilityList = ({ onEdit, onDelete, onUpdate }) => {
                         </span>
                       )}
                     </div>
+                    {availability.isBooked && availability.appointmentDetails && (
+                      <div className="mt-2 p-3 bg-[#1F2937] rounded-md">
+                        <div className="flex items-start">
+                          <User className="h-4 w-4 text-cyan-500 mt-0.5 mr-2 flex-shrink-0" />
+                          <div className="text-sm">
+                            <p className="font-medium text-blue-900">
+                              Appointment with {availability.appointmentDetails.customer?.firstName} {availability.appointmentDetails.customer?.lastName}
+                            </p>
+                            <p className="text-blue-700">
+                              Customer: {availability.appointmentDetails.customer?.email}
+                            </p>
+                            <p className="text-blue-700">
+                              Status: {availability.appointmentDetails.status}
+                            </p>
+                            {availability.appointmentDetails.notes && (
+                              <p className="text-blue-700 mt-1">
+                                Notes: {availability.appointmentDetails.notes}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="flex items-center space-x-2">
                     {!availability.isBooked && (
                       <>
                         <button
                           onClick={() => handleEdit(availability)}
-                          className="p-2 text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded-md"
+                          className="p-2 text-cyan-500 hover:text-blue-900 hover:bg-[#1F2937] rounded-md"
                           title="Edit"
                         >
                           <Edit className="h-4 w-4" />
@@ -156,7 +198,7 @@ const AvailabilityList = ({ onEdit, onDelete, onUpdate }) => {
                       </>
                     )}
                     {availability.isBooked && (
-                      <span className="text-sm text-gray-500">Cannot modify booked slots</span>
+                      <span className="text-sm text-gray-400">Cannot modify booked slots</span>
                     )}
                   </div>
                 </div>
